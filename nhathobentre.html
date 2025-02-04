@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhà Thờ Bến Tre</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const commentForm = document.getElementById("commentForm");
+    const commentText = document.getElementById("commentText");
+    const commentList = document.getElementById("commentList");
+
+    // Load bình luận từ Local Storage khi trang được tải
+    loadComments();
+
+    commentForm.addEventListener("submit", function (event) {
+      event.preventDefault(); // Ngăn tải lại trang
+
+      let commentContent = commentText.value.trim();
+      if (commentContent === "") return; // Không cho phép bình luận trống
+
+      addComment(commentContent, true);
+      saveComment(commentContent);
+
+      commentText.value = ""; // Xóa nội dung ô nhập
+    });
+
+    function addComment(content, saveToStorage = false) {
+      let newComment = document.createElement("div");
+      newComment.classList.add("comment-item");
+      newComment.innerHTML = `
+        <p>${content}</p>
+        <button class="delete-btn">Xóa</button>
+      `;
+
+      // Thêm sự kiện xóa bình luận
+      newComment.querySelector(".delete-btn").addEventListener("click", function () {
+        newComment.remove(); // Xóa khỏi giao diện
+        deleteComment(content); // Xóa khỏi Local Storage
+      });
+
+      commentList.prepend(newComment);
+
+      // Lưu vào Local Storage nếu cần
+      if (saveToStorage) saveComment(content);
+    }
+
+    function saveComment(content) {
+      let comments = JSON.parse(localStorage.getItem("comments")) || [];
+      comments.push(content);
+      localStorage.setItem("comments", JSON.stringify(comments));
+    }
+
+    function loadComments() {
+      let comments = JSON.parse(localStorage.getItem("comments")) || [];
+      comments.forEach(comment => addComment(comment));
+    }
+
+    function deleteComment(content) {
+      let comments = JSON.parse(localStorage.getItem("comments")) || [];
+      comments = comments.filter(comment => comment !== content); // Xóa bình luận khỏi danh sách
+      localStorage.setItem("comments", JSON.stringify(comments));
+    }
+  });
+</script>
+<body>
+
+<header>
+    <h1>Nhà Thờ Bến Tre</h1>
+    <nav>
+        <ul>
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="nguyendinhchieu.html">Nguyễn Đình Chiểu</a></li>
+            <li><a href="nhathobentre.html">Nhà Thờ Bến Tre</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="banner" style="background: url('images/nhathobentre-banner.jpg') no-repeat center/cover;">
+    <h2>Nhà Thờ Bến Tre</h2>
+</section>
+
+<section class="content">
+  <h2>Giới thiệu</h2>
+  <p>Nhà Thờ Bến Tre là một trong những công trình kiến trúc tôn giáo quan trọng, mang phong cách Gothic kết hợp truyền thống Việt Nam.</p>
+
+  <div class="image-container">
+    <img src="https://dulichtoivaban.com/wp-content/uploads/2022/09/Nha-Tho-La-Ma-Ben-Tre-la-mot-trong-ba-trung-tam-hanh-huong-Cong-giao.jpg.webp" alt="Nhà Thờ Bến Tre">
+    <img src="https://i.ytimg.com/vi/ZLKDtMBGaVE/hqdefault.jpg" alt="Bên trong nhà thờ">
+  </div>
+
+  <h2>Video tư liệu</h2>
+  <div class="video-container">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/vyIAHxJ7DY4?-Y" title="Video về Nhà Thờ Bến Tre" frameborder="0" allowfullscreen></iframe>
+  </div>
+</section>
+
+    <h2>Lịch sử</h2>
+    <p>Được xây dựng từ thế kỷ 19, nhà thờ là nơi sinh hoạt tín ngưỡng của người Công giáo Bến Tre.</p>
+
+    <h2>Kiến trúc</h2>
+    <p>Công trình có mái vòm cao, các cửa kính màu đẹp mắt và nội thất trang nghiêm.</p>
+
+    <h2>Ý nghĩa</h2>
+    <p>Nhà thờ không chỉ là nơi tôn giáo mà còn là điểm du lịch thu hút nhiều du khách.</p>
+</section>
+
+<div class="map fade-in">
+    <a href="https://www.google.com/maps/dir//Nhà+Thờ+Bến+Tre" target="_blank">📍 Xem bản đồ</a>
+</div>
+<section class="comments">
+  <h2>Đánh giá & Bình luận</h2>
+
+  <form id="commentForm">
+    <textarea id="commentText" placeholder="Nhập bình luận của bạn..." required></textarea>
+    <button type="submit">Gửi</button>
+  </form>
+
+  <div id="commentList">
+    <!-- Bình luận sẽ được hiển thị ở đây -->
+  </div>
+</section>
+<section class="share">
+  <h2>Chia sẻ bài viết</h2>
+  <a href="#" class="share-btn facebook">Chia sẻ Facebook</a>
+  <a href="#" class="share-btn twitter">Chia sẻ Twitter</a>
+  <a href="#" class="share-btn zalo">Chia sẻ Zalo</a>
+</section>
+<footer>
+    <p>&copy; 2025 Du lịch Bến Tre. Mọi quyền được bảo lưu.</p>
+</footer>
+
+</body>
+</html>

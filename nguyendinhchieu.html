@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Di tích Nguyễn Đình Chiểu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const commentForm = document.getElementById("commentForm");
+    const commentText = document.getElementById("commentText");
+    const commentList = document.getElementById("commentList");
+
+    // Load bình luận từ Local Storage khi trang được tải
+    loadComments();
+
+    commentForm.addEventListener("submit", function (event) {
+      event.preventDefault(); // Ngăn tải lại trang
+
+      let commentContent = commentText.value.trim();
+      if (commentContent === "") return; // Không cho phép bình luận trống
+
+      addComment(commentContent, true);
+      saveComment(commentContent);
+
+      commentText.value = ""; // Xóa nội dung ô nhập
+    });
+
+    function addComment(content, saveToStorage = false) {
+      let newComment = document.createElement("div");
+      newComment.classList.add("comment-item");
+      newComment.innerHTML = `
+        <p>${content}</p>
+        <button class="delete-btn">Xóa</button>
+      `;
+
+      // Thêm sự kiện xóa bình luận
+      newComment.querySelector(".delete-btn").addEventListener("click", function () {
+        newComment.remove(); // Xóa khỏi giao diện
+        deleteComment(content); // Xóa khỏi Local Storage
+      });
+
+      commentList.prepend(newComment);
+
+      // Lưu vào Local Storage nếu cần
+      if (saveToStorage) saveComment(content);
+    }
+
+    function saveComment(content) {
+      let comments = JSON.parse(localStorage.getItem("comments")) || [];
+      comments.push(content);
+      localStorage.setItem("comments", JSON.stringify(comments));
+    }
+
+    function loadComments() {
+      let comments = JSON.parse(localStorage.getItem("comments")) || [];
+      comments.forEach(comment => addComment(comment));
+    }
+
+    function deleteComment(content) {
+      let comments = JSON.parse(localStorage.getItem("comments")) || [];
+      comments = comments.filter(comment => comment !== content); // Xóa bình luận khỏi danh sách
+      localStorage.setItem("comments", JSON.stringify(comments));
+    }
+  });
+ 
+</script>
+
+<body>
+
+<header>
+    <h1>Di tích Nguyễn Đình Chiểu</h1>
+    <nav>
+        <ul>
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="nguyendinhchieu.html">Nguyễn Đình Chiểu</a></li>
+            <li><a href="nhathobentre.html">Nhà Thờ Bến Tre</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="banner" style="background: url('images/nguyendinhchieu-banner.jpg') no-repeat center/cover;">
+    <h2>Di tích Nguyễn Đình Chiểu</h2>
+</section>
+
+<section class="content">
+  <h2>Giới thiệu</h2>
+  <p>Khu lưu niệm Nguyễn Đình Chiểu nằm ở xã An Đức, huyện Ba Tri, tỉnh Bến Tre. Đây là nơi tôn vinh nhà thơ, nhà giáo, thầy thuốc yêu nước Nguyễn Đình Chiểu.</p>
+
+  <div class="image-container">
+    <img src="https://thamhiemmekong.com/wp-content/uploads/2020/06/langmonguyendinhchieu01.jpg" alt="Đền thờ Nguyễn Đình Chiểu">
+    <img src="https://thamhiemmekong.com/wp-content/uploads/2020/06/ditichlangmonguyendinhchieu.jpg" alt="Bên trong khu di tích">
+  </div>
+
+  <h2>Video tư liệu</h2>
+  <div class="video-container">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/UZgjrd0DizY?" title="Video về Nguyễn Đình Chiểu" frameborder="0" allowfullscreen></iframe>
+  </div>
+</section>
+
+    <h2>Lịch sử</h2>
+    <p>Nguyễn Đình Chiểu (1822-1888) là một trong những nhà thơ yêu nước tiêu biểu nhất của Việt Nam. Ông nổi tiếng với tác phẩm "Lục Vân Tiên" và những bài thơ thể hiện tinh thần chống ngoại xâm.</p>
+
+    <h2>Kiến trúc</h2>
+    <p>Khu di tích được xây dựng với phong cách truyền thống, có khu đền thờ, khu trưng bày tư liệu và tượng Nguyễn Đình Chiểu.</p>
+
+    <h2>Ý nghĩa</h2>
+    <p>Di tích là điểm đến không chỉ mang giá trị văn hóa, lịch sử mà còn giáo dục lòng yêu nước cho thế hệ sau.</p>
+</section>
+
+<div class="map fade-in">
+    <a href="https://www.google.com/maps/dir//Đền+thờ+Nguyễn+Đình+Chiểu" target="_blank">📍 Xem bản đồ</a>
+</div>
+<section class="comments">
+  <h2>Đánh giá & Bình luận</h2>
+
+  <form id="commentForm">
+    <textarea id="commentText" placeholder="Nhập bình luận của bạn..." required></textarea>
+    <button type="submit">Gửi</button>
+  </form>
+
+  <div id="commentList">
+    <!-- Bình luận sẽ được hiển thị ở đây -->
+  </div>
+</section>
+<section class="share">
+  <h2>Chia sẻ bài viết</h2>
+  <a href="#" class="share-btn facebook">Chia sẻ Facebook</a>
+  <a href="#" class="share-btn twitter">Chia sẻ Twitter</a>
+  <a href="#" class="share-btn zalo">Chia sẻ Zalo</a>
+</section>
+
+<footer>
+    <p>&copy; 2025 Du lịch Bến Tre. Mọi quyền được bảo lưu.</p>
+</footer>
+
+</body>
+</html>
+<body>
+
+<header>
+    <h1>Di tích Nguyễn Đình Chiểu</h1>
+    <nav>
+        <ul>
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="nguyendinhchieu.html">Nguyễn Đình Chiểu</a></li>
+            <li><a href="nhathobentre.html">Nhà Thờ Bến Tre</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="banner" style="background: url('images/nguyendinhchieu-banner.jpg') no-repeat center/cover;">
+    <h2>Di tích Nguyễn Đình Chiểu</h2>
+</section>
+
+<section class="content">
+  <h2>Giới thiệu</h2>
+  <p>Khu lưu niệm Nguyễn Đình Chiểu nằm ở xã An Đức, huyện Ba Tri, tỉnh Bến Tre. Đây là nơi tôn vinh nhà thơ, nhà giáo, thầy thuốc yêu nước Nguyễn Đình Chiểu.</p>
+
+  <div class="image-container">
+    <img src="https://thamhiemmekong.com/wp-content/uploads/2020/06/langmonguyendinhchieu01.jpg" alt="Đền thờ Nguyễn Đình Chiểu">
+    <img src="https://thamhiemmekong.com/wp-content/uploads/2020/06/ditichlangmonguyendinhchieu.jpg" alt="Bên trong khu di tích">
+  </div>
+
+  <h2>Video tư liệu</h2>
+  <div class="video-container">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/UZgjrd0DizY?" title="Video về Nguyễn Đình Chiểu" frameborder="0" allowfullscreen></iframe>
+  </div>
+</section>
+
+    <h2>Lịch sử</h2>
+    <p>Nguyễn Đình Chiểu (1822-1888) là một trong những nhà thơ yêu nước tiêu biểu nhất của Việt Nam. Ông nổi tiếng với tác phẩm "Lục Vân Tiên" và những bài thơ thể hiện tinh thần chống ngoại xâm.</p>
+
+    <h2>Kiến trúc</h2>
+    <p>Khu di tích được xây dựng với phong cách truyền thống, có khu đền thờ, khu trưng bày tư liệu và tượng Nguyễn Đình Chiểu.</p>
+
+    <h2>Ý nghĩa</h2>
+    <p>Di tích là điểm đến không chỉ mang giá trị văn hóa, lịch sử mà còn giáo dục lòng yêu nước cho thế hệ sau.</p>
+</section>
+
+<div class="map fade-in">
+    <a href="https://www.google.com/maps/dir//Đền+thờ+Nguyễn+Đình+Chiểu" target="_blank">📍 Xem bản đồ</a>
+</div>
+<section class="comments">
+  <h2>Đánh giá & Bình luận</h2>
+
+  <form id="commentForm">
+    <textarea id="commentText" placeholder="Nhập bình luận của bạn..." required></textarea>
+    <button type="submit">Gửi</button>
+  </form>
+
+  <div id="commentList">
+    <!-- Bình luận sẽ được hiển thị ở đây -->
+  </div>
+</section>
+<section class="share">
+  <h2>Chia sẻ bài viết</h2>
+  <a href="#" class="share-btn facebook">Chia sẻ Facebook</a>
+  <a href="#" class="share-btn twitter">Chia sẻ Twitter</a>
+  <a href="#" class="share-btn zalo">Chia sẻ Zalo</a>
+</section>
+
+<footer>
+    <p>&copy; 2025 Du lịch Bến Tre. Mọi quyền được bảo lưu.</p>
+</footer>
+
+</body>
+</html>
